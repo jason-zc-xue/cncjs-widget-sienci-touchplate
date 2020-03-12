@@ -75,6 +75,37 @@ const TextFieldContent = styled.div`
     padding: 0 5px;
 `;
 
+const TextFieldInput = styled.input`
+    float: left;
+    width: 66.66666667%;
+    border: 1px solid #e3e3e3;
+
+
+
+`;
+
+const SelectField = styled.select`
+    float: left;
+    width: 66.66666667%;
+    border: 1px solid #e3e3e3;
+
+
+`;
+
+const SubmitButton = styled.input`
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+
+
+
+`;
+
+const InputForm = styled.form`
+    background-color: #f5f5f5;
+    
+`;
+
 class App extends PureComponent {
     static propTypes = {
     };
@@ -244,6 +275,10 @@ class App extends PureComponent {
 
     function sendDrillBitRadius(dbrInMM) {
         // Do the sending thing **********************************************************************************************88
+        // Use api.macros.create for the first one
+        // Use api.macros.update from then on
+        
+        // controller.command("macro:run") thingy
     }
     
     function parseRadiusInMM(input, type) {
@@ -288,6 +323,17 @@ class App extends PureComponent {
             }
         }
     }
+
+    document.getElementById("theForm").addEventListener("submit", (e)=>{
+        e.preventDefault();
+        var theInput = document.getElementById("dbSize").value;
+        var theUnit = document.getElementById("dbUnit").value;
+        if(parseRadiusInMM(theInput, theUnit)) {
+            // Invalid input, reprompt
+            document.getElementById("dbSize").value = "";
+            alert("Invalid value");
+        }
+    })
 
     render() {
         const {
@@ -343,20 +389,20 @@ class App extends PureComponent {
                             </TextFieldContent>
                             }
                         </TextField>
-                        <form id="theForm">
-                            <label>
+                        <InputForm id="theForm">
+                            <TextFieldLabel>
                                 Drill Bit Type:
-                                <select id="dbUnit" required>
-                                    <option value="in">Fractional Inch</option>
-                                    <option value="mm">Metric</option>
-                                </select>
-                            </label>
-                            <label>
+                            </TextFieldLabel>
+                            <SelectField id="dbUnit" required>
+                                <option value="in">Fractional Inch</option>
+                                <option value="mm">Metric</option>
+                            </SelectField>
+                            <TextFieldLabel>
                                 Drill Bit Size:
-                                <input type="text" id="dbSize" required/>
-                            </label>
-                            <input type="submit" value="Probe"/>
-                        </form>
+                            </TextFieldLabel>
+                            <TextFieldInput type="text" id="dbSize" required/>
+                            <SubmitButton type="submit" value="Probe"/>
+                        </InputForm>
                     </PanelBody>
                 </Panel>
             </Container>
