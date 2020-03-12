@@ -241,6 +241,54 @@ class App extends PureComponent {
             }
         };
     }
+
+    function sendDrillBitRadius(dbrInMM) {
+        // Do the sending thing **********************************************************************************************88
+    }
+    
+    function parseRadiusInMM(input, type) {
+        if(type == 'in') {
+            var split = input.split('/');
+            if(split.length == 1) {
+                if(split[0].isNaN) {
+                    return true; // When called, it's in an while(parseRadiusInMM) and it reprompts the user as long as the input is not understandable
+                }
+                else {
+                    var num = parseFloat(split[0]);
+                    num = in2mm(num);
+                    num /= 2;
+                    sendDrillBitRadius(num);
+                    return false;
+                }
+            }
+            else if(split.length == 2) {
+                if(split[0].isNaN || split[1].isNaN) {
+                    return true;
+                }
+                else {
+                    var num = parseInt(split[0]) / (parseInt([1]) * 2);
+                    num = in2mm(num);
+                    sendDrillBitRadius(num);
+                    return false;
+                }
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            if(input.isNaN) {
+                return true;
+            }
+            else {
+                var num = parseFloat(input);
+                num /= 2;
+                sendDrillBitRadius(num);
+                return false;
+            }
+        }
+    }
+
     render() {
         const {
             port,
@@ -295,30 +343,20 @@ class App extends PureComponent {
                             </TextFieldContent>
                             }
                         </TextField>
-                        <TextField>
-                            <TextFieldLabel>MPos X</TextFieldLabel>
-                            <TextFieldContent>{mpos.x} {units}</TextFieldContent>
-                        </TextField>
-                        <TextField>
-                            <TextFieldLabel>MPos Y</TextFieldLabel>
-                            <TextFieldContent>{mpos.y} {units}</TextFieldContent>
-                        </TextField>
-                        <TextField>
-                            <TextFieldLabel>MPos Z</TextFieldLabel>
-                            <TextFieldContent>{mpos.z} {units}</TextFieldContent>
-                        </TextField>
-                        <TextField>
-                            <TextFieldLabel>WPos X</TextFieldLabel>
-                            <TextFieldContent>{wpos.x} {units}</TextFieldContent>
-                        </TextField>
-                        <TextField>
-                            <TextFieldLabel>WPos Y</TextFieldLabel>
-                            <TextFieldContent>{wpos.y} {units}</TextFieldContent>
-                        </TextField>
-                        <TextField>
-                            <TextFieldLabel>WPos Z</TextFieldLabel>
-                            <TextFieldContent>{wpos.z} {units}</TextFieldContent>
-                        </TextField>
+                        <form id="theForm">
+                            <label>
+                                Drill Bit Type:
+                                <select id="dbUnit" required>
+                                    <option value="in">Fractional Inch</option>
+                                    <option value="mm">Metric</option>
+                                </select>
+                            </label>
+                            <label>
+                                Drill Bit Size:
+                                <input type="text" id="dbSize" required/>
+                            </label>
+                            <input type="submit" value="Probe"/>
+                        </form>
                     </PanelBody>
                 </Panel>
             </Container>
